@@ -1,5 +1,5 @@
 # Defining VM Volume
-resource "libvirt_volume" "centos7-qcow2" {
+resource "libvirt_volume" "debian11-qcow2" {
   name = "debian11.qcow2"
   pool = "default" # List storage pools using virsh pool-list
   #source = "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2"
@@ -19,8 +19,8 @@ resource "libvirt_cloudinit_disk" "commoninit" {
 }
 
 # Define KVM domain to create
-resource "libvirt_domain" "centos7" {
-  name   = "debian-11-magnus"
+resource "libvirt_domain" "debian11" {
+  name   = "debian-11"
   memory = "2048"
   vcpu   = 2
   cloudinit = libvirt_cloudinit_disk.commoninit.id
@@ -30,7 +30,7 @@ resource "libvirt_domain" "centos7" {
   }
 
   disk {
-    volume_id = "${libvirt_volume.centos7-qcow2.id}"
+    volume_id = "${libvirt_volume.debian11-qcow2.id}"
   }
   console {
     type = "pty"
@@ -47,6 +47,6 @@ resource "libvirt_domain" "centos7" {
 
 # Output Server IP
 output "ip" {
-  depends_on = [libvirt_domain.centos7]
-  value = "${libvirt_domain.centos7.network_interface.0.addresses.0}"
+  depends_on = [libvirt_domain.debian11]
+  value = "${libvirt_domain.debian11.network_interface.0.addresses.0}"
 }

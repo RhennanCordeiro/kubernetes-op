@@ -1,1 +1,1 @@
-Em construção
+Repositório para facilitar meus testes com aplicações e protocolos
