@@ -1,11 +1,11 @@
 # Defining VM Volume
-resource "libvirt_volume" "debian11-qcow2" {
-  name = "debian11.qcow2"
+resource "libvirt_volume" "debian12-qcow2" {
+  name = "debian12.qcow2"
   pool = "default" # List storage pools using virsh pool-list
   #source = "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2"
   #source = "CentOS-7-x86_64-GenericCloud.qcow2"
   #source = "debian-11-genericcloud-amd64.qcow2"
-  source = "https://cloud.debian.org/images/cloud/bullseye/latest/debian-11-genericcloud-amd64.qcow2"
+  source = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-genericcloud-amd64.qcow2"
   format = "qcow2"
   
 }
@@ -19,7 +19,7 @@ resource "libvirt_cloudinit_disk" "commoninit" {
 }
 
 # Define KVM domain to create
-resource "libvirt_domain" "debian11" {
+resource "libvirt_domain" "debian12" {
   name   = "debian-11-labk"
   memory = "2048"
   vcpu   = 2
@@ -30,7 +30,7 @@ resource "libvirt_domain" "debian11" {
   }
 
   disk {
-    volume_id = "${libvirt_volume.debian11-qcow2.id}"
+    volume_id = "${libvirt_volume.debian12-qcow2.id}"
   }
   console {
     type = "pty"
@@ -47,6 +47,6 @@ resource "libvirt_domain" "debian11" {
 
 # Output Server IP
 output "ip" {
-  depends_on = [libvirt_domain.debian11]
-  value = "${libvirt_domain.debian11.network_interface.0.addresses.0}"
+  depends_on = [libvirt_domain.debian12]
+  value = "${libvirt_domain.debian12.network_interface.0.addresses.0}"
 }
