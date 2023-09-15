@@ -20,7 +20,7 @@ resource "libvirt_cloudinit_disk" "commoninit" {
 
 # Define KVM domain to create
 resource "libvirt_domain" "debian12" {
-  name   = "debian-11-labk"
+  name   = "debian-12"
   memory = "2048"
   vcpu   = 2
   cloudinit = libvirt_cloudinit_disk.commoninit.id
