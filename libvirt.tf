@@ -18,9 +18,17 @@ resource "libvirt_cloudinit_disk" "commoninit" {
   user_data = data.template_file.user_data.rendered
 }
 
+# Generate a random vm name
+resource "random_string" "vm-name" {
+  length  = 12
+  upper   = false
+  lower   = true
+  special = false
+}
+
 # Define KVM domain to create
 resource "libvirt_domain" "debian12" {
-  name   = "debian-12"
+  name   = "debian-12-${random_string.vm-name.result}"
   memory = "2048"
   vcpu   = 2
   cloudinit = libvirt_cloudinit_disk.commoninit.id
