@@ -1,13 +1,13 @@
 # Defining VM Volume
+
+# 40GB OS volume
+variable "diskBytes" { default = 1024*1024*1024*20 }
+
 resource "libvirt_volume" "debian12-qcow2" {
   name = "debian12.qcow2"
   pool = "default" # List storage pools using virsh pool-list
-  #source = "https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2"
-  #source = "CentOS-7-x86_64-GenericCloud.qcow2"
-  #source = "debian-11-genericcloud-amd64.qcow2"
-  source = "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-genericcloud-amd64.qcow2"
+  source = "debian-12-genericcloud-amd64.qcow2"
   format = "qcow2"
-  
 }
 
 data "template_file" "user_data"{
@@ -39,6 +39,7 @@ resource "libvirt_domain" "debian12" {
 
   disk {
     volume_id = "${libvirt_volume.debian12-qcow2.id}"
+    
   }
   console {
     type = "pty"
