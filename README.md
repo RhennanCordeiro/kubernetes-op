@@ -31,7 +31,8 @@ systemctl restart containerd
 
 Agora sim, começar a criação do cluster
 
-sudo kubeadm init --control-plane-endpoint "kubernetes1" --kubernetes-version v1.32.0 --pod-network-cidr 10.244.0.0/16
+kubeadm init --control-plane-endpoint="192-168-122-200.nip.io:6443" --upload-certs --apiserver-advertise-address=192.168.122.101 --pod-network-cidr=10.244.0.0/16
+
 
 Executar os comandos para apontar corretamente o client para a api do kluster
 
