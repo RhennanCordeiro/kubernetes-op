@@ -59,3 +59,8 @@ kube-system    kube-apiserver-kubernetes1            1/1     Running   0        
 kube-system    kube-controller-manager-kubernetes1   1/1     Running   0          2m19s
 kube-system    kube-proxy-tr9ld                      1/1     Running   0          2m13s
 kube-system    kube-scheduler-kubernetes1            1/1     Running   0          2m18s
+
+
+
+
+apache.192-168-122-200.nip.io
