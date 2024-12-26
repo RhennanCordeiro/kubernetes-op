@@ -34,7 +34,7 @@ systemctl restart containerd
 Agora sim, começar a criação do cluster
 
 ```bash
-kubeadm init --control-plane-endpoint="192-168-122-200.nip.io:6443" --upload-certs --apiserver-advertise-address=192.168.122.101 --pod-network-cidr=10.244.0.0/16
+    kubeadm init --control-plane-endpoint="192-168-122-200.nip.io:6443" --upload-certs --apiserver-advertise-address=192.168.122.101 --pod-network-cidr=10.244.0.0/16
 ```
 
 Executar os comandos para apontar corretamente o client para a api do kluster
@@ -47,9 +47,9 @@ Executar os comandos para apontar corretamente o client para a api do kluster
 ```
 
 Instalar o plugin de rede 
-
+```bash
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
-
+```
 
 Resultado final do primeiro node e control plane
 
