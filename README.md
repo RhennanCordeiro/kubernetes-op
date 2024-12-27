@@ -51,6 +51,7 @@ Instalar o plugin de rede
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 ```
 
+
 Resultado final do primeiro node e control plane
 
 root@kubernetes1:~# kubectl get pods -A
@@ -65,12 +66,41 @@ kube-system    kube-proxy-tr9ld                      1/1     Running   0        
 kube-system    kube-scheduler-kubernetes1            1/1     Running   0          2m18s
 
 
+Escalar o coredns para os 3 nodes
+```bash
+kubectl scale deployment coredns --replicas=3 -n kube-system
+```
+
+Todo nó do control plane em um cluster Kubernetes possui, por padrão, um taint com a regra NoSchedule. Esse taint impede que workloads comuns, como Pods de aplicativos, sejam agendadas nesses nós.
+
+O objetivo principal dessa regra é garantir que os recursos do control plane fiquem disponíveis exclusivamente para os componentes críticos que gerenciam o cluster, como:
+
+kube-apiserver: Gerencia a comunicação entre os componentes do Kubernetes.
+kube-scheduler: Responsável por agendar Pods nos nós.
+kube-controller-manager: Garante que o estado desejado do cluster seja mantido.
+etcd: Banco de dados que armazena o estado do cluster.
+Esses serviços são essenciais para o funcionamento do Kubernetes, e qualquer interferência ou sobrecarga nos recursos do control plane pode comprometer o gerenciamento do cluster. Por isso, em ambientes de produção, é fundamental manter esse isolamento para garantir a estabilidade e confiabilidade da infraestrutura.
+
+No entanto, como estamos configurando um cluster em um ambiente de laboratório, onde a separação rígida de funções não é uma prioridade, podemos remover o taint NoSchedule. Isso permitirá que os nós do control plane também sejam utilizados para executar workloads de usuário, maximizando o uso dos recursos disponíveis no cluster.
+
+```bash
+    kubectl taint nodes kubernetes1 node-role.kubernetes.io/control-plane:NoSchedule-
+    kubectl taint nodes kubernetes2 node-role.kubernetes.io/control-plane:NoSchedule-
+    kubectl taint nodes kubernetes3 node-role.kubernetes.io/control-plane:NoSchedule-
+```
+
+
 O kubernetes só aceita load balancer, quando tem algum plugin cloud, porém tenho que fazer ele rodar em base metal com o IP que eu quero
 
-kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
+```bash
+    kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
+```
 
-nano ipaddresspool.yaml
+```bash
+    nano ipaddresspool.yaml
+```
 
+```bash
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
@@ -79,9 +109,13 @@ metadata:
 spec:
   addresses:
   - 192.168.122.200-192.168.122.200
+```
 
+```bash
 nano l2advertisement.yaml
+```
 
+```bash
 apiVersion: metallb.io/v1beta1
 kind: L2Advertisement
 metadata:
@@ -90,10 +124,12 @@ metadata:
 spec:
   ipAddressPools:
   - default-pool
+```
 
+```bash
 kubectl apply -f ipaddresspool.yaml
 kubectl apply -f l2advertisement.yaml
-
+```
 
 Cluster Puro
 apache.192-168-122-200.nip.io
