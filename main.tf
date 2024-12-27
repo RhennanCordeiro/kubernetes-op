@@ -70,6 +70,7 @@ data "template_file" "user_data" {
     virtual_ip     = var.vip
     hostname       = each.key
     ssh_public_key   = file("~/.ssh/id_rsa.pub")
+    etcd_version    =  "v3.5.17"
   }
 }
 
