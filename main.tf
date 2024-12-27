@@ -12,11 +12,11 @@ provider "libvirt" {
 
 # Variáveis para os nomes das máquinas e IPs estáticos
 variable "vm_names" {
-  default = ["kubernetes1", "kubernetes2", "kubernetes3"]
+  default = ["kubernetes1", "kubernetes2", "kubernetes3", "kubernetes4"]
 }
 
 variable "vm_ips" {
-  default = ["192.168.122.101", "192.168.122.102", "192.168.122.103"]
+  default = ["192.168.122.101", "192.168.122.102", "192.168.122.103", "192.168.122.104"]
 }
 
 # Variáveis para configuração do keepalived
@@ -30,12 +30,14 @@ locals {
     "kubernetes1" = 100
     "kubernetes2" = 90
     "kubernetes3" = 80
+    "kubernetes4" = 70
   }
 
   instance_state = {
     "kubernetes1" = "MASTER"
     "kubernetes2" = "BACKUP"
     "kubernetes3" = "BACKUP"
+    "kubernetes4" = "NONE"
   }
 }
 

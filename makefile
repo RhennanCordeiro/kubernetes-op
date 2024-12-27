@@ -4,7 +4,7 @@ DEBIAN_IMAGE_FILE := debian-12-genericcloud-amd64.qcow2
 RESIZE_SIZE := 10G
 USER_HOME := $(shell echo $$HOME)
 KNOWN_HOSTS := $(USER_HOME)/.ssh/known_hosts
-IPS := 192.168.122.101 192.168.122.102 192.168.122.103
+IPS := 192.168.122.101 192.168.122.102 192.168.122.103 192.168.122.104
 
 # Funções para comandos comuns
 remove_known_hosts = $(foreach ip,$(IPS),ssh-keygen -f "$(KNOWN_HOSTS)" -R "$(ip)";)

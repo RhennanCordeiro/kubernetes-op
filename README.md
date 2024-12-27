@@ -27,6 +27,8 @@ Para resolver, verifique se a linha security_driver = "none" não está comentad
 
 Alterar o SystemdCgroup de false para true
 
+Alterar a imagem sandbox_image = "registry.k8s.io/pause:3.6" para sandbox_image = "registry.k8s.io/pause:3.10"
+
 Reiniciar o containerd
 
 systemctl restart containerd
