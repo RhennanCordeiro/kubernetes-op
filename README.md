@@ -40,15 +40,15 @@ Agora sim, começar a criação do cluster
 Executar os comandos para apontar corretamente o client para a api do kluster
 
 ```bash
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
-  export KUBECONFIG=/etc/kubernetes/admin.conf
+    mkdir -p $HOME/.kube
+    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    sudo chown $(id -u):$(id -g) $HOME/.kube/config
+    export KUBECONFIG=/etc/kubernetes/admin.conf
 ```
 
 Instalar o plugin de rede 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+    kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
 ```
 
 
@@ -127,10 +127,52 @@ spec:
 ```
 
 ```bash
-kubectl apply -f ipaddresspool.yaml
-kubectl apply -f l2advertisement.yaml
+    kubectl apply -f ipaddresspool.yaml
+    kubectl apply -f l2advertisement.yaml
 ```
 
-Cluster Puro
+Instalar o Ingress do nginx
+
+```bash
+    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+```
+```bash
+    kubectl scale deployment ingress-nginx-controller --replicas=3 -n ingress-nginx
+```
+
+
+
+Caso tenha problemas checar o campo #Ingress Class#
+```bash
+root@kubernetes3:~# kubectl describe ingress apache-ingress
+Name:             apache-ingress
+Labels:           <none>
+Namespace:        default
+Address:          192.168.122.101,192.168.122.102,192.168.122.103
+Ingress Class:    nginx
+Default backend:  <default>
+Rules:
+  Host                           Path  Backends
+  ----                           ----  --------
+  apache.192-168-122-200.nip.io  
+                                 /   apache-service:80 (10.244.1.6:80,10.244.2.6:80,10.244.0.6:80)
+Annotations:                     nginx.ingress.kubernetes.io/rewrite-target: /
+Events:
+  Type    Reason  Age                    From                      Message
+  ----    ------  ----                   ----                      -------
+  Normal  Sync    3m12s (x2 over 3m44s)  nginx-ingress-controller  Scheduled for sync
+  Normal  Sync    3m12s (x2 over 3m44s)  nginx-ingress-controller  Scheduled for sync
+  Normal  Sync    3m12s (x2 over 3m44s)  nginx-ingress-controller  Scheduled for sync
+```
+Para editar
+kubectl edit ingress apache-ingress
+Adicionar abaixo do spec:
+```bash
+  ingressClassName: nginx
+```
+
+
+URL para acessar o serviço
+
 apache.192-168-122-200.nip.io
 
