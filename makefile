@@ -26,7 +26,7 @@ remove_ssh_hosts:
 	$(call remove_known_hosts)
 
 # Targets
-create: download_image resize_image terraform_apply remove_ssh_hosts
+create: download_image resize_image remove_ssh_hosts terraform_apply
 
 destroy: terraform_destroy remove_ssh_hosts
 

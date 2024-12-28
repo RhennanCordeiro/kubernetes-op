@@ -70,7 +70,7 @@ kube-system    kube-scheduler-kubernetes1            1/1     Running   0        
 
 Escalar o coredns para os 3 nodes
 ```bash
-kubectl scale deployment coredns --replicas=3 -n kube-system
+kubectl scale deployment coredns --replicas=4 -n kube-system
 ```
 
 Todo nó do control plane em um cluster Kubernetes possui, por padrão, um taint com a regra NoSchedule. Esse taint impede que workloads comuns, como Pods de aplicativos, sejam agendadas nesses nós.
@@ -136,12 +136,14 @@ spec:
 Instalar o Ingress do nginx
 
 ```bash
-    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/refs/heads/main/deploy/static/provider/baremetal/deploy.yaml
 ```
 ```bash
-    kubectl scale deployment ingress-nginx-controller --replicas=3 -n ingress-nginx
+    kubectl scale deployment ingress-nginx-controller --replicas=4 -n ingress-nginx
 ```
 
+
+Deplois de fazer o deploy do apache
 
 
 Caso tenha problemas checar o campo #Ingress Class#
@@ -167,7 +169,9 @@ Events:
   Normal  Sync    3m12s (x2 over 3m44s)  nginx-ingress-controller  Scheduled for sync
 ```
 Para editar
+```bash
 kubectl edit ingress apache-ingress
+```
 Adicionar abaixo do spec:
 ```bash
   ingressClassName: nginx
