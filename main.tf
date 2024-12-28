@@ -21,7 +21,11 @@ variable "vm_ips" {
 
 # Variáveis para configuração do keepalived
 variable "vip" {
-  default = "192.168.122.200"  # IP virtual
+  default = "192.168.122.200/24"  # IP virtual
+}
+# Variáveis para configuração do keepalived
+variable "vip_gw" {
+  default = "192.168.122.1"  # Gw do IP virtual
 }
 
 # Definir a prioridade e o estado para cada instância
@@ -70,6 +74,7 @@ data "template_file" "user_data" {
     instance_state = local.instance_state[each.key]
     priority       = local.instance_priority[each.key]
     virtual_ip     = var.vip
+    virtual_ip_gw     = var.vip_gw
     hostname       = each.key
     ssh_public_key   = file("~/.ssh/id_rsa.pub")
     etcd_version    =  "v3.5.17"
