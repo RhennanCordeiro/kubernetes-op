@@ -39,6 +39,12 @@ Agora sim, começar a criação do cluster
     kubeadm init --control-plane-endpoint="192-168-122-200.nip.io:6443" --upload-certs --apiserver-advertise-address=192.168.122.101 --pod-network-cidr=10.244.0.0/16
 ```
 
+Exemplo de comando join para control plane
+```bash
+kubeadm join 192-168-122-200.nip.io:6443 --token siipbr.bx448jidt0nj69l8 --discovery-token-ca-cert-hash sha256:f14c808de65b0a598971314ebf3e37aa0772873b6a141b18cf44bf2519f6d240 \
+        --control-plane --certificate-key 837dd291248e5c444591ca13a822e8b4945fc263465702e0a1d53839a0a29536
+```
+
 Executar os comandos para apontar corretamente o client para a api do kluster
 
 ```bash
