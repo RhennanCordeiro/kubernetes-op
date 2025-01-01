@@ -188,3 +188,30 @@ URL para acessar o serviço
 
 apache.192-168-122-200.nip.io
 
+
+
+Adicionar um novo control plane ao cluster
+
+```bash
+kubeadm join 192-168-122-200.nip.io:6443 --token 14nykf.52mzhryo46s1f02m \
+    --discovery-token-ca-cert-hash sha256:92962c3142edb06fbdcd17bad19405757d53fed9ef59a48e9952306df5f4ebdd \
+    --control-plane --certificate-key 71267029a4abc8bf8c9071c04d18b2eb6766f27bd4b5a697355aa8f69980f47e
+```
+
+Para gerar o Token
+```bash
+    kubeadm token create
+```
+Ver o discovery-token-ca-cert-hash
+
+```bash
+openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | \
+openssl rsa -pubin -outform DER 2>/dev/null | \
+openssl dgst -sha256 -hex | sed 's/^.* //'
+```
+
+Para ver o certificate key
+
+```bash
+kubeadm init phase upload-certs --upload-certs
+```
