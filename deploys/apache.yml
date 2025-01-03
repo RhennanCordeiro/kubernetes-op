@@ -51,6 +51,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: nginx
   rules:
   - host: apache.192-168-122-200.nip.io
     http:

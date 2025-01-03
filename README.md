@@ -97,9 +97,6 @@ No entanto, como estamos configurando um cluster em um ambiente de laboratório,
     kubectl taint nodes kubernetes3 node-role.kubernetes.io/control-plane:NoSchedule-
 ```
 
-
-O kubernetes só aceita load balancer, quando tem algum plugin cloud, porém tenho que fazer ele rodar em base metal com o IP que eu quero
-
 ```bash
     kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.9/config/manifests/metallb-native.yaml
 ```
@@ -193,25 +190,54 @@ apache.192-168-122-200.nip.io
 Adicionar um novo control plane ao cluster
 
 ```bash
-kubeadm join 192-168-122-200.nip.io:6443 --token 14nykf.52mzhryo46s1f02m \
-    --discovery-token-ca-cert-hash sha256:92962c3142edb06fbdcd17bad19405757d53fed9ef59a48e9952306df5f4ebdd \
-    --control-plane --certificate-key 71267029a4abc8bf8c9071c04d18b2eb6766f27bd4b5a697355aa8f69980f47e
+  kubeadm join 192-168-122-200.nip.io:6443 --token 14nykf.52mzhryo46s1f02m \
+      --discovery-token-ca-cert-hash sha256:92962c3142edb06fbdcd17bad19405757d53fed9ef59a48e9952306df5f4ebdd \
+      --control-plane --certificate-key 71267029a4abc8bf8c9071c04d18b2eb6766f27bd4b5a697355aa8f69980f47e
 ```
 
 Para gerar o Token
 ```bash
-    kubeadm token create
-```
-Ver o discovery-token-ca-cert-hash
-
-```bash
-openssl x509 -pubkey -in /etc/kubernetes/pki/ca.crt | \
-openssl rsa -pubin -outform DER 2>/dev/null | \
-openssl dgst -sha256 -hex | sed 's/^.* //'
+  kubeadm token create --print-join-command
 ```
 
 Para ver o certificate key
 
 ```bash
-kubeadm init phase upload-certs --upload-certs
+  kubeadm init phase upload-certs --upload-certs
+```
+
+
+
+
+## Backup e Restauração ##
+
+Apontar os certificados e host etcd do kubernetes
+```bash
+  export ETCDCTL_API=3
+  export ETCDCTL_ENDPOINTS="https://localhost:2379"
+  export ETCDCTL_CACERT="/etc/kubernetes/pki/etcd/ca.crt"
+  export ETCDCTL_CERT="/etc/kubernetes/pki/etcd/server.crt"
+  export ETCDCTL_KEY="/etc/kubernetes/pki/etcd/server.key"
+```
+
+Verificar saúde do etcd local
+```bash
+  etcdctl endpoint status --write-out=table
+```
+
+Realizar o backup
+
+```bash
+  etcdctl snapshot save backup_cluster.db
+```
+
+Checar o backup
+
+```bash
+  etcdctl snapshot status backup_cluster.db --write-out=table
+```
+
+```bash
+  etcdctl snapshot restore backup_cluster.db \
+  --data-dir /var/lib/etcd
 ```
