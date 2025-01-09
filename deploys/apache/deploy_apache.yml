@@ -36,7 +36,7 @@ kind: Service
 metadata:
   name: apache-service
 spec:
-  type: LoadBalancer
+
   selector:
     app: apache
   ports:
@@ -47,7 +47,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: apache-ingress
+  name: ingress-app1
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
@@ -73,6 +73,6 @@ data:
     <html>
     <head><title>Hello World</title></head>
     <body>
-      <h1>Hello, World! Welcome to Apache on Kubernetes!</h1>
+      <h1>Deploy realizado</h1>
     </body>
     </html>

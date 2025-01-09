@@ -139,7 +139,7 @@ spec:
 Instalar o Ingress do nginx
 
 ```bash
-    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/refs/heads/main/deploy/static/provider/baremetal/deploy.yaml
+    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/refs/heads/main/deploy/static/provider/cloud/deploy.yaml
 ```
 ```bash
     kubectl scale deployment ingress-nginx-controller --replicas=4 -n ingress-nginx
