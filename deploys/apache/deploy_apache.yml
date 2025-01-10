@@ -26,7 +26,7 @@ metadata:
   labels:
     app: apache
 spec:
-  replicas: 4
+  replicas: 3
   selector:
     matchLabels:
       app: apache
@@ -67,3 +67,40 @@ spec:
         - name: apache-template
           configMap:
             name: apache-hello-world
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache-service
+  namespace: meu-namespace
+  labels:
+    app: apache
+spec:
+  selector:
+    app: apache
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-app1
+  namespace: meu-namespace
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: apache.192-168-122-200.nip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: apache-service
+                port:
+                  number: 80
