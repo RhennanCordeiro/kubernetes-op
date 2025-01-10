@@ -39,8 +39,6 @@ spec:
               httpd-foreground
       volumes:
         - name: apache-html
-          emptyDir: {}
-        - name: apache-template
           configMap:
             name: apache-hello-world
 
@@ -92,6 +90,6 @@ data:
     <head><title>Hello World</title></head>
     <body>
       <h1>Deploy realizado</h1>
-      <p>Maquina: {{NODE_NAME}}</p>
+      <p>Maquina: {{NODE_NAME}} </p>
     </body>
     </html>
