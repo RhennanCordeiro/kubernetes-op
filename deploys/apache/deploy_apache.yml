@@ -3,10 +3,26 @@ kind: Namespace
 metadata:
   name: apacheqa
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apache-hello-world
+  namespace: apacheqa
+data:
+  index.html: |
+    <html>
+    <head><title>Hello World</title></head>
+    <body>
+      <h1>Deploy realizado</h1>
+      <p>Maquina: {{NODE_NAME}} </p>
+    </body>
+    </html>
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: apache
+  namespace: apacheqa
   labels:
     app: apache
 spec:
