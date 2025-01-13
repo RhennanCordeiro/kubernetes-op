@@ -17,7 +17,6 @@ data:
       <p>Maquina que respondeu a requisicao: {{NODE_NAME}} </p>
     </body>
     </html>
-
 ---
 apiVersion: apps/v1
 kind: Deployment
