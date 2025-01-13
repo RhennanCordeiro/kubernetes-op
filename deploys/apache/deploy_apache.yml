@@ -14,6 +14,7 @@ data:
     <head><title>Teste Deploy</title></head>
     <body>
       <h1>Deploy realizado</h1>
+      </hr>
       <p>Maquina que respondeu a requisicao: {{NODE_NAME}} </p>
     </body>
     </html>
