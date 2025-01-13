@@ -16,6 +16,7 @@ data:
       <h1>Deploy realizado</h1>
       </hr>
       <p>Maquina que respondeu a requisicao: {{NODE_NAME}} </p>
+      <h3>Feito</h3> 
     </body>
     </html>
 ---
@@ -35,6 +36,8 @@ spec:
     metadata:
       labels:
         app: apache
+      annotations:
+        kubectl.kubernetes.io/restartedAt: "{{now}}" # Força a recriação dos pods
     spec:
       tolerations:
         - key: "node-role.kubernetes.io/control-plane"
