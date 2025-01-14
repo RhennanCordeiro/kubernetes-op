@@ -180,7 +180,6 @@ Adicionar abaixo do spec:
   ingressClassName: nginx
 ```
 
-
 URL para acessar o serviço
 
 apache.192-168-122-200.nip.io
